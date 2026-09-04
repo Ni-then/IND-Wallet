@@ -32,12 +32,31 @@ export const AddMoney = () => {
             value: x.name
         }))} />
         <div className="flex justify-center pt-4">
-            <Button onClick={async() => {
-                await createOnRampTransaction(amount,provider)
-                window.location.href = redirectUrl || "";
-            }}>
-            Add Money
-            </Button>
+                <Button
+                    onClick={async () => {
+                        if (!amount || Number(amount) <= 0) {
+                            alert("Please enter a valid amount");
+                            return;
+                        }
+
+                        const result = await createOnRampTransaction(
+                            Number(amount),
+                            provider
+                        );
+
+                        console.log("Result:", result);
+
+                        if (!result.token) {
+                            alert(result.message);
+                            return;
+                        }
+
+                        window.location.href =
+                            `${redirectUrl}?token=${encodeURIComponent(result.token)}`;
+                    }}
+                >
+                    Add Money
+                </Button>
         </div>
     </div>
 </Card>

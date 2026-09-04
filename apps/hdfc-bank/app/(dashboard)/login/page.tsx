@@ -16,8 +16,10 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Transaction token coming from wallet app
-  // const token = searchParams.get("token");
+  const token = searchParams.get("token");
+  if(!token){
+    console.log("Transaction token is missing. Please initiate the transaction from the wallet app.");
+  }
 
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -53,13 +55,11 @@ export default function LoginPage() {
 
       // Login successful
       // Keep transaction token while going to processing page
-      // if (token) {
-      //   router.push(`/ processing ? token = ${ encodeURIComponent(token) } `);
-      // } else {
-      //   router.push("/processing");
-      // }
-      router.push("/processing");
-      router.refresh();
+      if (token) {
+        router.push(`/processing?token=${encodeURIComponent(token)}`);
+      } else {
+        console.log("Transaction token is missing. Please initiate the transaction from the wallet app.");
+      }
     } catch (error) {
       console.error("Login error:", error);
       setError("Something went wrong. Please try again.");

@@ -31,7 +31,8 @@ export async function createOnRampTransaction(amount:number,provider:string){
     })
     console.log("Done")
     return {
-        message:"On Ramp transaction added"
+        message:"OnRamp transaction created successfully",
+        token
     }
 
 }

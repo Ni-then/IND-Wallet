@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import HdfcNavbar from "@/components/HdfcNavbar";
-
+import axios from "axios"
 export default function Processing() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const amount = searchParams.get("amount");
+    // const amount = searchParams.get("amount");
     const token = searchParams.get("token");
 
     const [loading, setLoading] = useState(false);
@@ -18,19 +18,10 @@ export default function Processing() {
         setLoading(true);
 
         try {
-            const response = await fetch(
-                "http://localhost:3001/api/payment",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        amount,
-                        token,
-                    }),
-                }
-            );
+
+            const response = await axios.post("http://localhost:3001/api/hdfc-payment",{
+                token
+            })
 
             if (!response.ok) {
                 throw new Error("Payment failed");
@@ -65,7 +56,7 @@ export default function Processing() {
                     </h1>
 
                     <p className="text-gray-500 mt-3">
-                        ₹{amount} has been added to your IND Wallet
+                        {/* ₹{amount} has been added to your IND Wallet */}
                     </p>
 
                 </div>
@@ -164,7 +155,7 @@ export default function Processing() {
                         </span>
 
                         <span className="text-2xl font-bold text-gray-900">
-                            ₹{amount}
+                            {/* ₹{amount} */}
                         </span>
 
                     </div>
@@ -217,7 +208,7 @@ export default function Processing() {
                     onClick={handlePayment}
                     className="w-full bg-[#004c8f] hover:bg-[#003b70] text-white py-3.5 rounded-md font-semibold transition"
                 >
-                    Confirm & Pay ₹{amount}
+                    Confirm & Pay
                 </button>
 
             )}
