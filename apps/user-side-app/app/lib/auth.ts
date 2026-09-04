@@ -10,7 +10,6 @@ export const authOptions = {
                 mobileNumber: { label: "mobileNumber mobileNumber", type: "text", placeholder: "1231231231", required: true },
                 password: { label: "Password", type: "password", required: true }
             },
-            // TODO: User credentials type from next-aut
             async authorize(credentials: any) {
                 console.log("mobile", credentials.mobileNumber);
                 console.log("password:", credentials.password)

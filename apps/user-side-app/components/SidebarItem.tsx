@@ -1,20 +1,22 @@
 "use client"
-import { usePathname, useRouter } from "next/navigation";
-import React from "react";
-
-export const SidebarItem = ({ href, title, icon }: { href: string; title: string; icon: React.ReactNode }) => {
-    const router = useRouter();
-    const pathname = usePathname()
-    const selected = pathname === href
-
-    return <div className={`flex ${selected ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer  p-2 pl-8`} onClick={() => {
-        router.push(href);
-    }}>
-        <div className="pr-2">
+import { useRouter } from 'next/navigation'
+import React from 'react'
+useRouter
+const SidebarItem = ({href,title,icon}:{href:string,title:string,icon:React.ReactNode}) => {
+    const router = useRouter()
+  return (
+    <div >
+          <div className='cursor-pointer flex gap-2 p-2 hover:text-xl text-gray-200 duration-200 ' onClick={()=>router.push(href)}>
+        <div>
             {icon}
         </div>
-        <div className={`font-bold ${selected ? "text-[#6a51a6]" : "text-slate-500"}`}>
+        <div>
             {title}
         </div>
+
+        </div>
     </div>
+  )
 }
+
+export default SidebarItem

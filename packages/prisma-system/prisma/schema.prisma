@@ -49,3 +49,13 @@ enum OnRampStatus {
   Failure
   Processing
 }
+
+
+model HdfcAccount {
+  id            Int      @id @default(autoincrement())
+  userId        String      @unique
+  mobileNumber  String   @unique
+  password      String
+  balance       Int      @default(0)
+  createdAt     DateTime @default(now())
+}
