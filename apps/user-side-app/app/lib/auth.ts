@@ -1,16 +1,16 @@
 import { prisma } from "@repo/prisma-system/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt"
-
 export const authOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                mobileNumber: { label: "mobileNumber mobileNumber", type: "text", placeholder: "1231231231", required: true },
+                mobileNumber: { label: "mobileNumber", type: "text", placeholder: "1231231231", required: true },
                 password: { label: "Password", type: "password", required: true }
             },
             async authorize(credentials: any) {
+
                 console.log("mobile", credentials.mobileNumber);
                 console.log("password:", credentials.password)
                 // Do zod validation, OTP validation here
@@ -33,7 +33,6 @@ export const authOptions = {
                     }
                     return null;
                 }
-
                 try {
                     const randomBalance = Math.floor(Math.random() * 10001);
                     const user = await prisma.user.create({
@@ -62,6 +61,9 @@ export const authOptions = {
         })
     ],
     secret: process.env.JWT_SECRET || "secret",
+    pages: {
+        signIn: "/signin-signup",
+    },
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         async session({ token, session }: any) {

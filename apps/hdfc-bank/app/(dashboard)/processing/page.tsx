@@ -23,7 +23,7 @@ export default function Processing() {
                 token
             })
 
-            if (!response.ok) {
+            if (!response) {
                 throw new Error("Payment failed");
             }
 
