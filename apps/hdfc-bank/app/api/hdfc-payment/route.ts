@@ -18,10 +18,14 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
+
     console.log("Session:", session);
+
     const userId = session?.user?.name;
-    console.log("userId is here : ",userId)
-    if(!userId){
+
+    console.log("userId is here:", userId);
+
+    if (!userId) {
         return NextResponse.json(
             { message: "Unauthorized" },
             {
@@ -30,12 +34,13 @@ export async function POST(req: NextRequest) {
             }
         );
     }
+
     try {
         const body = await req.json();
 
-        const { token } = body;
+        const { token , amount } = body;
 
-        if (!token ) {
+        if (!token) {
             return NextResponse.json(
                 { message: "Token is required" },
                 {
@@ -45,72 +50,95 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const result = await prisma.$transaction(async (tx) => {
-            // 1. Find transaction using token
-            const transaction = await tx.onRampTransaction.findUnique({
-                where: {
-                    token,
-                },
-            });
-
-            if (!transaction) {
-                return {
-                    status: "not_found" as const,
-                };
-            }
-
-            // 2. Check transaction status
-            if (transaction.status !== "Processing") {
-                return {
-                    status: "already_processed" as const,
-                };
-            }
-
-            // IMPORTANT:
-            // Amount DB se aa raha hai.
-            // Frontend se amount lene ki zarurat nahi hai.
-            const amount = transaction.amount;
-
-            // 3. Find HDFC account
-            const account = await tx.hdfcAccount.findUnique({
-                where: {
-                    userId,
-                },
-            });
-
-            if (!account) {
-                throw new Error("HDFC account not found");
-            }
-
-            // 4. Check HDFC balance
-            if (account.balance < amount) {
-                throw new Error("Insufficient HDFC balance");
-            }
-
-            // 5. Deduct amount from HDFC account
-            const updatedAccount = await tx.hdfcAccount.update({
-                where: {
-                    id: account.id,
-                },
-                data: {
-                    balance: {
-                        decrement: amount,
+        const result = await prisma.$transaction(
+            async (tx) => {
+                // 1. Find transaction using token
+                const transaction = await tx.onRampTransaction.findUnique({
+                    where: {
+                        token,
                     },
-                },
-            });
+                });
 
-            return {
-                status: "success" as const,
-                transaction,
-                amount,
-                balance: updatedAccount.balance,
-            };
-        },
+                if (!transaction) {
+                    return {
+                        status: "not_found" as const,
+                    };
+                }
+
+                // 2. Check transaction status
+                if (transaction.status !== "Processing") {
+                    return {
+                        status: "already_processed" as const,
+                    };
+                }
+
+                // Amount DB se aa raha hai
+                const amount = transaction.amount;
+
+                // 3. Find HDFC account
+                const account = await tx.hdfcAccount.findUnique({
+                    where: {
+                        userId,
+                    },
+                });
+
+                if (!account) {
+                    throw new Error("HDFC account not found");
+                }
+
+                // 4. Check HDFC balance
+                if (account.balance < amount) {
+                    throw new Error("Insufficient HDFC balance");
+                }
+
+                // 5. Deduct money from HDFC account
+                const updatedAccount = await tx.hdfcAccount.update({
+                    where: {
+                        id: account.id,
+                    },
+                    data: {
+                        balance: {
+                            decrement: amount,
+                        },
+                    },
+                });
+
+                // 6. Add money to user's wallet Balance
+                const updatedWallet = await tx.balance.update({
+                    where: {
+                        userId: transaction.userId,
+                    },
+                    data: {
+                        amount: {
+                            increment: amount,
+                        },
+                    },
+                });
+
+                // 7. Mark OnRampTransaction as Success
+                const updatedTransaction =
+                    await tx.onRampTransaction.update({
+                        where: {
+                            id: transaction.id,
+                        },
+                        data: {
+                            status: "Success",
+                        },
+                    });
+
+                return {
+                    status: "success" as const,
+                    transaction: updatedTransaction,
+                    amount,
+                    hdfcBalance: updatedAccount.balance,
+                    walletBalance: updatedWallet.amount,
+                };
+            },
             {
                 maxWait: 10000,
-                timeout: 10000
+                timeout: 10000,
             }
-    );
+        );
 
         // Transaction not found
         if (result.status === "not_found") {
@@ -143,7 +171,8 @@ export async function POST(req: NextRequest) {
             {
                 message: "Payment captured successfully",
                 amount: result.amount,
-                balance: result.balance,
+                hdfcBalance: result.hdfcBalance,
+                walletBalance: result.walletBalance,
                 token,
             },
             {

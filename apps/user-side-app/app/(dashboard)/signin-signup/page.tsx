@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { ArrowRight, Lock, Smartphone } from "lucide-react";
-
+import {toast} from "sonner";
 export default function SignIn() {
     const [mobileNumber, setMobileNumber] = useState("");
     const [password, setPassword] = useState("");
@@ -28,7 +28,8 @@ export default function SignIn() {
             return;
         }
 
-        setError("Invalid mobile number or password.");
+        // setError("Invalid mobile number or password.");
+        toast.error("Invalid mobile number or password.");
         setLoading(false);
     };
 
@@ -88,10 +89,8 @@ export default function SignIn() {
                             onSubmit={handleSubmit}
                             className="space-y-5"
                         >
-
                             {/* Mobile Number */}
                             <div>
-
                                 <label
                                     htmlFor="mobileNumber"
                                     className="mb-2 block text-sm font-semibold"
@@ -100,12 +99,10 @@ export default function SignIn() {
                                 </label>
 
                                 <div className="relative">
-
                                     <Smartphone
                                         size={18}
                                         className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30"
                                     />
-
                                     <input
                                         id="mobileNumber"
                                         type="tel"

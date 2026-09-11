@@ -43,7 +43,6 @@ export const AddMoney = () => {
                             Number(amount),
                             provider
                         );
-
                         console.log("Result:", result);
 
                         if (!result.token) {

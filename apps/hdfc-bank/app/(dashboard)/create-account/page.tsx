@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import axios from "axios";
-
+import {toast} from "sonner"
 export default function CreateAccountPage() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,10 +25,9 @@ export default function CreateAccountPage() {
         setUserId("");
         setMobileNumber("")
         setPassword("")
-
+        toast.success("Account created successfully!");
         router.push("http://localhost:3001/login");
     };
-
     return (
         <div className="min-h-screen text-black bg-[#f1f3f5]">
 
@@ -38,8 +37,6 @@ export default function CreateAccountPage() {
                     setSidebarOpen(true)
                 }
             />
-
-
             {/* Sidebar */}
             <HdfcSidebar
                 isOpen={sidebarOpen}
