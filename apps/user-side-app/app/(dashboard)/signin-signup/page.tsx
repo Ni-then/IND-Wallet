@@ -34,32 +34,9 @@ export default function SignIn() {
     };
 
     return (
-        <main className="min-h-screen bg-white text-black">
+        <main className="min-h-auto bg-white text-black">
 
             {/* Navbar */}
-            <nav className="border-b border-black/10 bg-white">
-                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-sm font-black text-white">
-                            IN
-                        </div>
-
-                        <span className="text-xl font-bold tracking-tight">
-                            IND<span className="text-black/40"> Wallet</span>
-                        </span>
-                    </Link>
-
-                    <Link
-                        href="/"
-                        className="text-sm font-medium text-black/50 transition hover:text-black"
-                    >
-                        Back to home
-                    </Link>
-
-                </div>
-            </nav>
-
             {/* Login */}
             <section className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-10 sm:px-6">
 

@@ -6,7 +6,7 @@ const SidebarItem = ({href,title,icon}:{href:string,title:string,icon:React.Reac
     const router = useRouter()
   return (
     <div >
-          <div className='cursor-pointer flex gap-2 p-2 hover:text-xl text-gray-200 duration-200 ' onClick={()=>router.push(href)}>
+      <div className="cursor-pointer flex gap-2 p-2 text-black rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1" onClick={()=>router.push(href)}>
         <div>
             {icon}
         </div>

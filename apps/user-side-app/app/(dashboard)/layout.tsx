@@ -14,7 +14,7 @@ export default function Layout({
     return (
         <div className="min-h-screen bg-gray-100">
 
-            <nav className="fixed top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-slate-900 px-4 text-white shadow-md">
+            <nav className="fixed top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-white px-4 text-black shadow-md">
 
                 <div className="flex items-center gap-4">
 
@@ -30,7 +30,7 @@ export default function Layout({
                         href="/dashboard"
                         className="text-xl font-bold tracking-wide md:text-2xl"
                     >
-                        IND <span className="text-blue-300">Wallet</span>
+                        IND <span className="text-blue-600">Wallet</span>
                     </Link>
                 </div>
 
@@ -38,10 +38,10 @@ export default function Layout({
                 <div className="flex items-center gap-3">
                     <div className="hidden text-right sm:block">
                         <p className="text-sm font-medium">Welcome back</p>
-                        <p className="text-xs text-gray-300">IND Wallet</p>
+                        <p className="text-xs text-black">IND Wallet</p>
                     </div>
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 font-bold">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 font-bold">
                         U
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export default function Layout({
                 <aside
                     className={`
             fixed left-0 top-16 z-40 h-[calc(100vh-4rem)]
-            w-64 bg-slate-900 text-white shadow-xl
+            w-64 bg-white text-black shadow-xl
             transition-transform duration-300
             md:translate-x-0
             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -84,8 +84,8 @@ export default function Layout({
                             />
 
                             <SidebarItem
-                                href="/transactions"
-                                title="Transactions"
+                                href="/p2p"
+                                title="p2p"
                                 icon={<TransactionsIcon />}
                             />
                         </div>
