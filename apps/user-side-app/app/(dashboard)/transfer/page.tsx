@@ -1,4 +1,4 @@
-
+"use server"
 import React from "react";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";

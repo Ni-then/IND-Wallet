@@ -17,10 +17,10 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
 
   const token = searchParams.get("token");
-  if(!token){
-    console.log("Transaction token is missing. Please initiate the transaction from the wallet app.");
+  const amount = searchParams.get("amount")
+  if(!token && amount){
+    console.log("Transaction token is missing or amount is missing. Please initiate the transaction from the wallet app.");
   }
-
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -55,10 +55,13 @@ export default function LoginPage() {
 
       // Login successful
       // Keep transaction token while going to processing page
-      if (token) {
-        router.push(`/processing?token=${encodeURIComponent(token)}`);
+      if (token && amount) {
+
+        router.push(
+          `/processing?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`
+        );
       } else {
-        console.log("Transaction token is missing. Please initiate the transaction from the wallet app.");
+        console.log("Transaction token is missing or amount is missing. Please initiate the transaction from the wallet app.");
       }
     } catch (error) {
       console.error("Login error:", error);

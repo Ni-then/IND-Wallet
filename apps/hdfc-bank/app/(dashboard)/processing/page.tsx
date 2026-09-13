@@ -4,13 +4,17 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import HdfcNavbar from "@/components/HdfcNavbar";
 import axios from "axios"
+
 export default function Processing() {
+
     const router = useRouter();
     const searchParams = useSearchParams();
 
     // const amount = searchParams.get("amount");
     const token = searchParams.get("token");
+    const amount = searchParams.get("amount");
 
+    console.log(amount);//null
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -31,7 +35,7 @@ export default function Processing() {
 
             setTimeout(() => {
                 router.push(
-                    `http://localhost:3000/transfer/success?amount=${amount}`
+                    `http://localhost:3000/transfer`
                 );
             }, 2000);
 
@@ -56,7 +60,7 @@ export default function Processing() {
                     </h1>
 
                     <p className="text-gray-500 mt-3">
-                        {/* ₹{amount} has been added to your IND Wallet */}
+                        ₹{amount} has been added to your IND Wallet
                     </p>
 
                 </div>
@@ -155,7 +159,7 @@ export default function Processing() {
                         </span>
 
                         <span className="text-2xl font-bold text-gray-900">
-                            {/* ₹{amount} */}
+                            ₹{amount}
                         </span>
 
                     </div>

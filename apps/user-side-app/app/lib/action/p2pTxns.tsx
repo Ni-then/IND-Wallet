@@ -37,11 +37,9 @@ export async function P2pTxns(mobileNumber: string, amount: number) {
         await prisma.$transaction(async (tx) => {
 
             // SQL injection can be done ,
-            await tx.$queryRaw`
-SELECT * FROM "Balance"
-                WHERE "userId" = ${ Number(from) }
-                FOR UPDATE
-    `;
+            await tx.$queryRaw`SELECT * FROM "Balance"
+                WHERE "userId" = ${Number(from)}
+                FOR UPDATE`;
 
             // now
             // above sleep , after sleep

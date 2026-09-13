@@ -51,7 +51,7 @@ export const AddMoney = () => {
                         }
 
                         window.location.href =
-                            `${redirectUrl}?token=${encodeURIComponent(result.token)}`;
+                            `${redirectUrl}?token=${encodeURIComponent(result.token)}&amount=${encodeURIComponent(amount)}`;
                     }}
                 >
                     Add Money

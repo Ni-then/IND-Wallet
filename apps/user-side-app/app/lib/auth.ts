@@ -10,7 +10,6 @@ export const authOptions = {
                 password: { label: "Password", type: "password", required: true }
             },
             async authorize(credentials: any) {
-
                 console.log("mobile", credentials.mobileNumber);
                 console.log("password:", credentials.password)
                 // Do zod validation, OTP validation here
