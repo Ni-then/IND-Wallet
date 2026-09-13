@@ -1,6 +1,64 @@
+import { redirect } from "next/navigation";
 
-export default function() {
-    return <div>
-        Dashboard
-    </div>
+import { getServerSession } from "next-auth";
+
+import { OnRampTransactions } from "../../../components/OnRampTransactions";
+import { BalanceCard } from "../../../components/BalanceCard";
+import { authOptions } from "../../lib/auth";
+import QuickActions from "../../../components/QuickActions";
+import RecentTransactions from "../../../components/RecentTransactions";
+import SecurityCard from "../../../components/SecuityCard";
+import { getDashboardData } from "../../lib/action/dashboard";
+
+export default async function DashboardPage() {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+        redirect("/signin");
+    }
+
+    const data = await getDashboardData();
+
+    return (
+        <div className="min-h-screen bg-white text-black">
+            <div className="mx-auto flex min-h-screen max-w-[1600px]">
+
+
+                {/* Main */}
+                <main className="min-w-0 flex-1 pb-24 lg:pb-8">
+
+                    <div className="px-4 py-6 sm:px-6 lg:px-8">
+
+                        {/* Balance + Quick actions */}
+                        <section className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
+
+                            <BalanceCard
+                                amount={data.balance.amount}
+                                locked={data.balance.locked}
+                            />
+
+                            <QuickActions />
+                        </section>
+
+                        {/* Transactions */}
+                        <section className="mt-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+
+                            <RecentTransactions
+                                p2pTransactions={data.p2pTransactions}
+                                onRampTransactions={data.onRampTransactions}
+                            />
+
+                            <div className="space-y-6">
+                                <OnRampTransactions
+                                    transactions={data.onRampTransactions}
+                                />
+
+                                <SecurityCard />
+                            </div>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+    );
 }
