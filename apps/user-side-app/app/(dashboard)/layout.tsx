@@ -82,6 +82,12 @@ export default function Layout({
                                 title="Transfer"
                                 icon={<TransferIcon />}
                             />
+                            <SidebarItem
+                                href="/transactions"
+                                title="Transactions"
+                                icon={<TransferIcon />}
+                            />
+
 
                             <SidebarItem
                                 href="/p2p"

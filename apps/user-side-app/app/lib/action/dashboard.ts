@@ -48,7 +48,7 @@ export async function getDashboardData(): Promise<DashboardData> {
 
     const [user, balance, onRampTransactions, p2pTransactions] =
         await Promise.all([
-            // ---------------- USER ----------------
+
             prisma.user.findUnique({
                 where: {
                     id: userId,
@@ -59,7 +59,7 @@ export async function getDashboardData(): Promise<DashboardData> {
                 },
             }),
 
-            // ---------------- BALANCE ----------------
+
             prisma.balance.findUnique({
                 where: {
                     userId,
@@ -70,7 +70,7 @@ export async function getDashboardData(): Promise<DashboardData> {
                 },
             }),
 
-            // ---------------- ON RAMP ----------------
+
             prisma.onRampTransaction.findMany({
                 where: {
                     userId,
@@ -88,7 +88,6 @@ export async function getDashboardData(): Promise<DashboardData> {
                 },
             }),
 
-            // ---------------- P2P ----------------
             prisma.p2pTransfer.findMany({
                 where: {
                     OR: [
@@ -127,24 +126,24 @@ export async function getDashboardData(): Promise<DashboardData> {
         ]);
 
     return {
-        // ---------------- USER ----------------
+
         user: {
             id: user?.id ?? userId,
             mobileNumber: user?.mobileNumber ?? "",
         },
 
-        // ---------------- BALANCE ----------------
+
         balance: {
             amount: balance?.amount ?? 0,
             locked: balance?.locked ?? 0,
         },
 
-        // ---------------- ON RAMP ----------------
+
         onRampTransactions: onRampTransactions.map((txn) => ({
             id: txn.id,
             amount: txn.amount,
 
-            // Convert Prisma enum into our public type
+
             status:
                 txn.status === "Success"
                     ? "Success"
