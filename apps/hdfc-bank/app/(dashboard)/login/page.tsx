@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   QrCode,
   Eye,
@@ -13,7 +13,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { paiseToRupees, rupeesToPaise } from "@/app/lib/Txns_numbers";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -370,12 +370,21 @@ export default function LoginPage() {
 
             Not registered for NetBanking?{" "}
 
-            <a
+            {/* <a
               href= {`/create-account?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`}
               className="text-blue-600 font-semibold hover:underline"
             >
               Register Now
-            </a>
+            </a> */}
+
+            {token && amount && (
+              <a
+                href={`/create-account?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`}
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Register Now
+              </a>
+            )}
 
           </p>
 
@@ -413,5 +422,21 @@ export default function LoginPage() {
 
       </div>
     </div>
+  );
+}
+
+
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }

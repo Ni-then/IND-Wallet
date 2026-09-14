@@ -1,7 +1,7 @@
 "use client"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/Appbar";
-import Dashboard from "../components/Dashboard";
+
 import GetStartWithIndWallet from "../components/Get-start-with-IND-Wallet";
 
 export default function Page() {

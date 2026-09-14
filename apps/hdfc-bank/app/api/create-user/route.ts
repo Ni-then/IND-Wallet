@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST(req:Request){
     const data = await req.json();
     if(!data){
-        return new Error("Oops,something went wrong , please try again later!")
+        return NextResponse.json({
+            message: "Oops, something went wrong, please try again later!"
+        })
     }
     console.log(data)
     const {mobileNumber,userId,password} = data;

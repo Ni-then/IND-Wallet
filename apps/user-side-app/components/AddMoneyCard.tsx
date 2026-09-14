@@ -9,7 +9,7 @@ import { paiseToRupees, rupeesToPaise } from "../app/lib/Txns_numbers";
 
 const SUPPORTED_BANKS = [{
     name: "HDFC Bank",
-    redirectUrl: "http://localhost:3001/login"
+    redirectUrl: `${process.env.NEXT_PUBLIC_HDFC_BANK_URL}/login`
 }];
 
 export const AddMoney = () => {
@@ -22,7 +22,7 @@ export const AddMoney = () => {
     return <Card title="Add Money">
     <div className="w-full">
         <TextInput label={"Amount"} placeholder={"Amount"} onChange={(val)=>{
-            setAmount(val)
+            setAmount(Number(val))
         }}/>
         <div className="py-4 text-left">
             Bank

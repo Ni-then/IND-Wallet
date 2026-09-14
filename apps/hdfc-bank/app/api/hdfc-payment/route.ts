@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_MAIN_APP_URL!,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
 };

@@ -1,4 +1,3 @@
-import RecentTransactions from "../../../components/RecentTransactions";
 import SecurityCard from "../../../components/SecuityCard";
 import Txns from "../../../components/Txns";
 import { getDashboardData } from "../../lib/action/dashboard";

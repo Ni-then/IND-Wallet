@@ -4,10 +4,10 @@ import HdfcNavbar from "@/components/HdfcNavbar";
 import HdfcSidebar from "@/components/HdfcSidebar";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import axios from "axios";
 import {toast} from "sonner"
-export default function CreateAccountPage() {
+function CreateAccountContent() {
     const searchParams = useSearchParams()
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function CreateAccountPage() {
     const amount = searchParams.get("amount")
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/api/create-user", {
+        axios.post("/api/create-user", {
             userId,
             mobileNumber,
             password,
@@ -28,7 +28,19 @@ export default function CreateAccountPage() {
         setMobileNumber("")
         setPassword("")
         toast.success("Account created successfully!");
-        router.push(`http://localhost:3001/login?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`);
+        if (!token || !amount) {
+  console.log("Token or amount is missing");
+  return;
+}
+        const hdfcBankUrl = process.env.NEXT_PUBLIC_HDFC_BANK_URL;
+
+        if (!hdfcBankUrl) {
+            throw new Error("NEXT_PUBLIC_HDFC_BANK_URL is not configured");
+        }
+
+        router.push(
+            `${hdfcBankUrl}/login?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`
+        );
     };
     return (
         <div className="min-h-screen text-black bg-[#f1f3f5]">
@@ -380,5 +392,19 @@ export default function CreateAccountPage() {
                 </div>
             </main>
         </div>
+    );
+}
+
+export default function CreateAccountPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="min-h-screen flex items-center justify-center">
+                    Loading...
+                </div>
+            }
+        >
+            <CreateAccountContent />
+        </Suspense>
     );
 }
