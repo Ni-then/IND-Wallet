@@ -2,6 +2,17 @@ import { prisma } from "@repo/prisma-system/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt"
 export const authOptions = {
+    cookies: {
+        sessionToken: {
+            name: `user-app.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: false, // set true once you're on https
+            },
+        },
+    },
     providers: [
         CredentialsProvider({
             name: 'Credentials',

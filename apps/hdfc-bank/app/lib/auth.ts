@@ -3,6 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
 export const authOptions = {
+    cookies: {
+        sessionToken: {
+            name: `bank-app.session-token`,
+            options: { httpOnly: true, sameSite: "lax", path: "/", secure: false },
+        },
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
