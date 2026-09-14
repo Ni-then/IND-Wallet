@@ -2,13 +2,14 @@ import { redirect } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 
-import { OnRampTransactions } from "../../../components/OnRampTransactions";
+// import { OnRampTransactions } from "../../../components/OnRampTransactions";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { authOptions } from "../../lib/auth";
 import QuickActions from "../../../components/QuickActions";
-import RecentTransactions from "../../../components/RecentTransactions";
-import SecurityCard from "../../../components/SecuityCard";
+// import RecentTransactions from "../../../components/RecentTransactions";
+// import SecurityCard from "../../../components/SecuityCard";
 import { getDashboardData } from "../../lib/action/dashboard";
+import Txns from "../../../components/Txns";
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions);
@@ -41,20 +42,11 @@ export default async function DashboardPage() {
                         </section>
 
                         {/* Transactions */}
-                        <section className="mt-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+                        <section className="mt-6 grid gap-6  text-black">
 
-                            <RecentTransactions
-                                p2pTransactions={data.p2pTransactions}
-                                onRampTransactions={data.onRampTransactions}
-                            />
+                            <Txns p2pTxns={data.p2pTransactions} onRampTxns ={data.onRampTransactions}/>
 
-                            <div className="space-y-6">
-                                <OnRampTransactions
-                                    transactions={data.onRampTransactions}
-                                />
-
-                                <SecurityCard />
-                            </div>
+                            
                         </section>
                     </div>
                 </main>

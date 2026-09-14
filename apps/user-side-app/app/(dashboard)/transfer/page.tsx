@@ -6,6 +6,8 @@ import { BalanceCard } from "../../../components/BalanceCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import {prisma} from "@repo/prisma-system/client"
+import { getDashboardData } from "../../lib/action/dashboard";
+import Txns from "../../../components/Txns";
 async function getBalance() {
   const session = await getServerSession(authOptions);
   const balance = await prisma.balance.findFirst({
@@ -18,25 +20,10 @@ async function getBalance() {
     locked: balance?.locked || 0
   }
 }
-async function getOnRampTransactions() {
-  const session = await getServerSession(authOptions);
-  const txns = await prisma.onRampTransaction.findMany({
-    where: {
-      userId: Number(session?.user?.id)
-    }
-  });
-  return txns.map(t => ({
-    time: t.startTime,
-    amount: t.amount,
-    status: t.status,
-    provider: t.provider
-  }))
-} 
+const data = await getDashboardData();
 const Transfer = async() => {
   const balance = await getBalance();
   
-  const txns = await getOnRampTransactions();
-
   const transactions = [
     {
       time: new Date(),
@@ -143,23 +130,11 @@ const Transfer = async() => {
 
 
         {/* Transactions */}
-        <div className="rounded-2xl  p-5 shadow-xl backdrop-blur md:p-6 xl:col-span-1">
+        <div className="rounded-2xl ">
           
-          <div className="mb-5 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">
-                Recent Transactions
-              </h2>
-
-              <p className="text-sm text-slate-400">
-                Your latest wallet activity
-              </p>
-            </div>
-
-            <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-          </div>
-
-          <OnRampTransactions transactions={txns} />
+                     <Txns p2pTxns={data.p2pTransactions}
+                          onRampTxns={data.onRampTransactions} />
+          
         </div>
 
       </div>

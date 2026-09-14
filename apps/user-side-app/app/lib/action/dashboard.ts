@@ -72,12 +72,8 @@ export async function getDashboardData(): Promise<DashboardData> {
 
 
             prisma.onRampTransaction.findMany({
-                where: {
-                    userId,
-                },
-                orderBy: {
-                    startTime: "desc",
-                },
+                where: { userId },
+                orderBy: { startTime: "desc" },
                 take: 10,
                 select: {
                     id: true,
@@ -89,40 +85,28 @@ export async function getDashboardData(): Promise<DashboardData> {
             }),
 
             prisma.p2pTransfer.findMany({
-                where: {
-                    OR: [
-                        {
-                            fromUserId: userId,
-                        },
-                        {
-                            toUserId: userId,
-                        },
-                    ],
-                },
-                orderBy: {
-                    timestamp: "desc",
-                },
-                take: 10,
-                select: {
-                    id: true,
-                    amount: true,
-                    timestamp: true,
-                    fromUserId: true,
-                    toUserId: true,
-
-                    fromUser: {
-                        select: {
-                            mobileNumber: true,
-                        },
-                    },
-
-                    toUser: {
-                        select: {
-                            mobileNumber: true,
-                        },
-                    },
-                },
-            }),
+        where: {
+            OR: [
+                { fromUserId: userId },
+                { toUserId: userId },
+            ],
+        },
+        orderBy: { timestamp: "desc" },
+        take: 10,
+        select: {
+            id: true,
+            amount: true,
+            timestamp: true,
+            fromUserId: true,
+            toUserId: true,
+            fromUser: {
+                select: { mobileNumber: true },
+            },
+            toUser: {
+                select: { mobileNumber: true },
+            },
+        },
+    })
         ]);
 
     return {
