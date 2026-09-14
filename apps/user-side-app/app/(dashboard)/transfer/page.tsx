@@ -1,7 +1,6 @@
 "use server"
 import React from "react";
 import { AddMoney } from "../../../components/AddMoneyCard";
-import { OnRampTransactions } from "../../../components/OnRampTransactions";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
@@ -20,19 +19,10 @@ async function getBalance() {
     locked: balance?.locked || 0
   }
 }
-const data = await getDashboardData();
 const Transfer = async() => {
+  const data = await getDashboardData();
   const balance = await getBalance();
   
-  const transactions = [
-    {
-      time: new Date(),
-      amount: 10000,
-      status: "pending",
-      provider: "HDFC Bank",
-    },
-  ];
-
   return (
     <div className=" w-full h-full bg-white py-2 px-6 text-black ">
       

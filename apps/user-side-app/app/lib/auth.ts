@@ -1,6 +1,7 @@
 import { prisma } from "@repo/prisma-system/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt"
+import { rupeesToPaise } from "./Txns_numbers";
 export const authOptions = {
     cookies: {
         sessionToken: {
@@ -45,13 +46,15 @@ export const authOptions = {
                 }
                 try {
                     const randomBalance = Math.floor(Math.random() * 10001);
+                    // IN DB we will store the entered amount in paise not in ruppess 
+                    const amount = rupeesToPaise(randomBalance)
                     const user = await prisma.user.create({
                         data: {
                             mobileNumber: credentials.mobileNumber,
                             password: hashedPassword,
                             Balance: {
                                 create: {
-                                    amount: randomBalance,
+                                    amount: amount,
                                     locked: 0
                                 }
                             }

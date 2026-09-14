@@ -2,19 +2,21 @@
 
 import HdfcNavbar from "@/components/HdfcNavbar";
 import HdfcSidebar from "@/components/HdfcSidebar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 import axios from "axios";
 import {toast} from "sonner"
 export default function CreateAccountPage() {
+    const searchParams = useSearchParams()
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const [userId, setUserId] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
     const [password, setPassword] = useState("");
-
+    const token = searchParams.get("token")
+    const amount = searchParams.get("amount")
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios.post("http://localhost:3001/api/create-user", {
@@ -26,7 +28,7 @@ export default function CreateAccountPage() {
         setMobileNumber("")
         setPassword("")
         toast.success("Account created successfully!");
-        router.push("http://localhost:3001/login");
+        router.push(`http://localhost:3001/login?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`);
     };
     return (
         <div className="min-h-screen text-black bg-[#f1f3f5]">

@@ -1,3 +1,4 @@
+import { rupeesToPaise } from "@/app/lib/Txns_numbers";
 import { prisma } from "@repo/prisma-system/client";
 import { NextResponse } from "next/server";
 
@@ -19,12 +20,13 @@ export async function POST(req:Request){
         })
     }
     const gen_balance = Math.floor(Math.random() * 10001);
+    const amount = rupeesToPaise(gen_balance)
     const createUser = await prisma.hdfcAccount.create({
         data:{
             mobileNumber:mobileNumber,
             password:password,
             userId:userId,
-            balance:gen_balance,
+            balance: amount,
         }
     })
     return NextResponse.json({

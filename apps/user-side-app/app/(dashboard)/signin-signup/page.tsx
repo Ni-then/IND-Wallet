@@ -161,7 +161,7 @@ export default function SignIn() {
                     </div>
 
                     {/* Footer */}
-                    <p className="mt-6 text-center text-sm text-black/40">
+                    {/* <p className="mt-6 text-center text-sm text-black/40">
                         Don't have an IND Wallet?{" "}
                         <Link
                             href="/api/auth/signin?callbackUrl=/transfer"
@@ -169,7 +169,7 @@ export default function SignIn() {
                         >
                             Create one
                         </Link>
-                    </p>
+                    </p> */}
 
                     <p className="mt-8 text-center text-xs text-black/30">
                         Your wallet. Your control.

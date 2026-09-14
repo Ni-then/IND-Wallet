@@ -11,13 +11,14 @@ import {
 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { paiseToRupees, rupeesToPaise } from "@/app/lib/Txns_numbers";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const token = searchParams.get("token");
-  const amount = searchParams.get("amount")
+  const amount = searchParams.get("amount") //1000 Paise
   if(!token && amount){
     console.log("Transaction token is missing or amount is missing. Please initiate the transaction from the wallet app.");
   }
@@ -56,7 +57,7 @@ export default function LoginPage() {
       // Login successful
       // Keep transaction token while going to processing page
       if (token && amount) {
-
+        // 1000 PAISE
         router.push(
           `/processing?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`
         );
@@ -370,7 +371,7 @@ export default function LoginPage() {
             Not registered for NetBanking?{" "}
 
             <a
-              href="/create-user"
+              href= {`/create-account?token=${encodeURIComponent(token)}&amount=${encodeURIComponent(amount)}`}
               className="text-blue-600 font-semibold hover:underline"
             >
               Register Now

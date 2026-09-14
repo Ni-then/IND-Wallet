@@ -3,9 +3,9 @@ import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { useState } from "react";
 import { Select } from "@repo/ui/Select";
-import { Center } from "@repo/ui/Center";
 import { TextInput } from "@repo/ui/TextInput";
 import { createOnRampTransaction } from "../app/lib/action/createOnRampTransaction";
+import { paiseToRupees, rupeesToPaise } from "../app/lib/Txns_numbers";
 
 const SUPPORTED_BANKS = [{
     name: "HDFC Bank",
@@ -14,7 +14,10 @@ const SUPPORTED_BANKS = [{
 
 export const AddMoney = () => {
     const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
-    const [amount,setAmount] = useState(0)
+    const [amount,setAmount] = useState(0)//100 INR here is the problem 
+    // i need to convert this into paise
+    console.log("add mney",amount)
+    
     const [provider,setProvider] = useState(SUPPORTED_BANKS[0]?.name || "")
     return <Card title="Add Money">
     <div className="w-full">
@@ -40,7 +43,7 @@ export const AddMoney = () => {
                         }
 
                         const result = await createOnRampTransaction(
-                            Number(amount),
+                            rupeesToPaise(amount),
                             provider
                         );
                         console.log("Result:", result);
@@ -49,9 +52,10 @@ export const AddMoney = () => {
                             alert(result.message);
                             return;
                         }
-
+                            // direct INR meh 
                         window.location.href =
-                            `${redirectUrl}?token=${encodeURIComponent(result.token)}&amount=${encodeURIComponent(amount)}`;
+                            `${redirectUrl}?token=${encodeURIComponent(result.token)}&amount=${encodeURIComponent(rupeesToPaise(amount))}`;
+                            // 100 INR (no) 1000 PAISE (yes)
                     }}
                 >
                     Add Money

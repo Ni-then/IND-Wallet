@@ -1,5 +1,7 @@
 "use client";
 
+import { paiseToRupees } from "../app/lib/Txns_numbers";
+
 export default function Txns({
   p2pTxns,
   onRampTxns,
@@ -69,7 +71,7 @@ export default function Txns({
         : "text-green-600"
 } `}
                   >
-                    {txn.type === "sent" ? "-" : "+"} ₹{txn.amount}
+                    {txn.type === "sent" ? "-" : "+"} ₹{paiseToRupees(txn.amount)}
                   </p>
                 </div>
               );
@@ -93,7 +95,7 @@ export default function Txns({
                 </div>
 
                 <p className="ml-4 whitespace-nowrap font-semibold text-green-600">
-                  + ₹{txn.amount}
+                  + ₹{paiseToRupees(txn.amount)}
                 </p>
               </div>
             );
